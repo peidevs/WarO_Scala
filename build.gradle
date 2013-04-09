@@ -1,0 +1,82 @@
+
+apply plugin: 'scala'
+
+configurations {
+    releaseJars
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {    
+    compile 'org.scala-lang:scala-library:2.10.1'
+    compile 'com.google.guava:guava-collections:r03'
+    
+    testCompile 'org.specs2:specs2_2.10:1.14'
+    
+    releaseJars 'com.google.guava:guava-collections:r03'
+    releaseJars 'org.scala-lang:scala-library:2.10.1'    
+}
+
+task init {
+    delete "${buildDir}/jars"
+    mkdir "${buildDir}/jars"
+    delete stagingDir
+    mkdir stagingDir
+}
+
+task copyReleaseJars(type: Copy, dependsOn: 'init') {
+    into "${buildDir}/jars"
+    from configurations.releaseJars
+}
+
+jar.archiveName "${project.deliverableName}.jar"
+jar.manifest {
+    attributes 'Main-Class' : project.mainClass 
+    attributes 'Class-Path' : 'jars/scala-library-2.10.1.jar jars/guava-collections-r03.jar jars/guava-base-r03.jar'
+}
+
+task myBuild(dependsOn: ['test', 'copyReleaseJars', 'jar']) << {
+    def zipFile = "${buildDir}/${project.deliverableName}.zip"
+    ant.zip(destfile: "${zipFile}") {
+        zipfileset(dir: "${buildDir}/jars", prefix: "jars")
+        zipfileset(file: "${buildDir}/libs/${project.deliverableName}.jar")
+    }
+
+    ant.unzip(src: "${zipFile}", dest: project.stagingDir)
+}
+
+task myTest(dependsOn: 'myBuild') << {
+    executeOnShell("./test.sh org.peidevs.waro.domain.PlayerStatsSpec")
+    executeOnShell("./test.sh org.peidevs.waro.domain.PlayerSpec")
+    executeOnShell("./test.sh org.peidevs.waro.casino.DealerSpec")
+    executeOnShell("./test.sh org.peidevs.waro.casino.GameSpec")
+}
+
+// shell support 
+
+def executeOnShell(String command) {
+  def retval = executeOnShell(command, new File(System.properties.'user.dir'))
+
+  if (retval != 0) { throw new IllegalStateException("failed sh command") }
+}
+ 
+def executeOnShell(String command, File workingDir) {
+  println command
+  def process = new ProcessBuilder(addShellPrefix(command))
+                                    .directory(workingDir)
+                                    .redirectErrorStream(true)
+                                    .start()
+  process.inputStream.eachLine {println it}
+  process.waitFor();
+  return process.exitValue()
+}
+ 
+def addShellPrefix(String command) {
+  def commandArray = new String[3]
+  commandArray[0] = "sh"
+  commandArray[1] = "-c"
+  commandArray[2] = command
+  return commandArray
+}
