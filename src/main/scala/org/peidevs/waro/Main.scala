@@ -8,8 +8,6 @@ object Main {
 	    var config = new Config()
 	    var tourney = new Tourney(config)
 	    tourney.playGames()
-	    var dealer = new Dealer()
-	    dealer.dealHands(30,2)
 	    
 		println("done.")
 	}

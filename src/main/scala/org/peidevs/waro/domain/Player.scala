@@ -20,4 +20,19 @@ class Player(val name:String, var hand:List[Int], val playerStats:PlayerStats) {
         return bid
     }
     
+    def clear() = {
+        hand = List()
+        playerStats.clear()
+    }
+    
+    def winsRound(prizeCard:Int) = {
+        playerStats.winsRound(prizeCard)
+    }
+    
+    def emitLog():String = {
+        val log:String = playerStats.emitLog
+        val result:String = name + " " + log
+        return result
+    }
+    
 }

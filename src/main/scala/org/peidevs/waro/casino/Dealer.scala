@@ -30,7 +30,8 @@ class Dealer {
     
     def play(table:Table) = {
         table.kitty.foreach { prizeCard =>    
-            playRound(prizeCard, table.players)
+            val winner = playRound(prizeCard, table.players)
+            println(winner.emitLog())
         }        
     }
     
@@ -42,10 +43,12 @@ class Dealer {
         val winningBid = bid.offer
         val winner = bid.player
 
-        // if (verbose) { println "\nthis round: ${winner.name} WINS $prizeCard with ${winningBid}" }
+        val verbose = true
+        if (verbose) {
+            println("\nthis round: " + winner.name + " WINS " + prizeCard + " with " + winningBid)
+        }
 
-        winner.playerStats.numRoundsWon += 1
-        winner.playerStats.total += prizeCard
+        winner.winsRound(prizeCard)
         
         return winner        
     }
@@ -56,6 +59,11 @@ class Dealer {
         
         players.map ( p => {
                 val bid = p.getBid(prizeCard)
+
+                val verbose = true
+                if (verbose) {
+                    println(p.name + " bids '" + bid.offer + "' against " + max)
+                }
             
                 if (bid.offer > max) {
                     winningBid = bid
