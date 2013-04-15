@@ -12,7 +12,7 @@ class PlayerStatsSpec extends Specification {
         "reset to zero" in {
             0 mustEqual playerStats.total
             0 mustEqual playerStats.numRoundsWon
-            0 mustEqual playerStats.numGamesWon
+            9 mustEqual playerStats.numGamesWon
         }
     }
     
@@ -24,6 +24,17 @@ class PlayerStatsSpec extends Specification {
             11 mustEqual playerStats.total
             2 mustEqual playerStats.numRoundsWon
             1 mustEqual playerStats.numGamesWon
+        }
+    }
+
+    "the object 3" can {
+        var playerStats = new PlayerStats(1,1,1)
+        playerStats.winsGame()
+        
+        "win a game" in {
+            1 mustEqual playerStats.total
+            1 mustEqual playerStats.numRoundsWon
+            2 mustEqual playerStats.numGamesWon
         }
     }
     

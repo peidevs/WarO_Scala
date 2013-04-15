@@ -31,7 +31,7 @@ class Game {
             }                            
         }
 
-        winner.playerStats.numGamesWon += 1
+        winner.winsGame()
         println("\nGame summary:")
         println("overall WINNER is: " + winner.name)
         

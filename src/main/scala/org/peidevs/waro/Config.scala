@@ -2,6 +2,6 @@
 package org.peidevs.waro;
 
 class Config {
-    var numGames = 2
+    var numGames = 200
     var numCards = 20
 }

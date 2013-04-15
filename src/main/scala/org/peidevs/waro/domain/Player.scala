@@ -29,6 +29,10 @@ class Player(val name:String, var hand:List[Int], val playerStats:PlayerStats) {
         playerStats.winsRound(prizeCard)
     }
     
+    def winsGame() = {
+        playerStats.winsGame()
+    }
+    
     def emitLog():String = {
         val log:String = playerStats.emitLog
         val result:String = name + " " + log

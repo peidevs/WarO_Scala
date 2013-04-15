@@ -6,11 +6,14 @@ class PlayerStats(var total: Int, var numRoundsWon:Int, var numGamesWon:Int) {
         numRoundsWon = numRoundsWon + 1
         total = total + prizeCard        
     }
+
+    def winsGame() = {
+        numGamesWon = numGamesWon + 1
+    }
     
     def clear() = {
         total = 0
         numRoundsWon = 0
-        numGamesWon = 0
     }
     
     def emitLog:String = {
