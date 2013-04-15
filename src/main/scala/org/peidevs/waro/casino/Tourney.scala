@@ -8,10 +8,9 @@ import org.peidevs.waro.strategy._
 class Tourney(val config:Config) {
     val numGames:Int = config.numGames
     val numCards:Int = config.numCards
-    val player1 = new Player("Brahms", numCards, new PopStrategy())
-    val player2 = new Player("Beethoven", numCards,  new PopStrategy())
-    val player3 = new Player("Bach", numCards,  new PopStrategy())
-    val players:List[Player] = List(player1, player2, player3)
+    val player1 = new Player("Mozart", numCards, new PopStrategy())
+    val player2 = new Player("You", numCards,  new Console())
+    val players:List[Player] = List(player1, player2)
 
     def playGames() = {
         for (i <- 1 to numGames) {
