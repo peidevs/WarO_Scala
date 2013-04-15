@@ -52,6 +52,7 @@ task myTest(dependsOn: 'myBuild') << {
     executeOnShell("./test.sh org.peidevs.waro.domain.PlayerSpec")
     executeOnShell("./test.sh org.peidevs.waro.casino.DealerSpec")
     executeOnShell("./test.sh org.peidevs.waro.casino.GameSpec")
+    executeOnShell("./test.sh org.peidevs.waro.strategy.StrategySpec")
 }
 
 // shell support 
