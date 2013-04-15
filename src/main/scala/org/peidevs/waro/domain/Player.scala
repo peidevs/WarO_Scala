@@ -1,19 +1,22 @@
 
 package org.peidevs.waro.domain
 
-class Player(val name:String, var hand:List[Int], val playerStats:PlayerStats) {
+import org.peidevs.waro.strategy._
+
+class Player(val name:String, val maxCard:Int, val strategy:Strategy,
+                var hand:List[Int], val playerStats:PlayerStats) {
     
-    def this(name:String) {
-        this(name, List(), new PlayerStats(0,0,0))
+    def this(name:String, maxCard:Int, strategy:Strategy) {
+        this(name, maxCard, strategy, List(), new PlayerStats(0,0,0))
     }    
 
-    def this(name:String, hand:List[Int]) {
-        this(name, hand, new PlayerStats(0,0,0))
+    def this(name:String, maxCard:Int, strategy:Strategy, hand:List[Int]) {
+        this(name, maxCard, strategy, hand, new PlayerStats(0,0,0))
     }    
     
     def getBid(prizeCard:Int):Bid = {
 
-        val offer = hand(0)
+        val offer = strategy.selectCard(prizeCard, hand, maxCard)
         val bid = new Bid(offer, this)
         hand = hand diff List(offer)        
         
