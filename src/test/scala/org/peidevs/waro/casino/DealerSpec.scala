@@ -8,12 +8,12 @@ import org.specs2.mutable._
 
 class DealerSpec extends Specification {
     var dealer = new Dealer()
-    val popStrategy = new PopStrategy()
+    val popCard = new PopCard()
     val maxCard = 60
     
     "a dealer 1" can {
-        val player1 = new Player("Brahms", maxCard, popStrategy)
-        val player2 = new Player("Mozart", maxCard, popStrategy)
+        val player1 = new Player("Brahms", maxCard, popCard)
+        val player2 = new Player("Mozart", maxCard, popCard)
         val players = List(player1, player2)
         var table = dealer.deal(33, players)
         
@@ -37,8 +37,8 @@ class DealerSpec extends Specification {
     }
     
     "a dealer 1c" can {
-        val player1 = new Player("Brahms", maxCard, popStrategy, List(9))
-        val player2 = new Player("Mozart", maxCard, popStrategy, List(10))
+        val player1 = new Player("Brahms", maxCard, popCard, List(9))
+        val player2 = new Player("Mozart", maxCard, popCard, List(10))
         val players = List(player1, player2)
         val prizeCard:Int = 33
         val bid:Bid = dealer.findRoundWinner(prizeCard, players)
@@ -50,8 +50,8 @@ class DealerSpec extends Specification {
     }
 
     "a dealer 1d" can {
-        val player1 = new Player("Brahms", maxCard, popStrategy, List(9,15))
-        val player2 = new Player("Mozart", maxCard, popStrategy, List(10,2))
+        val player1 = new Player("Brahms", maxCard, popCard, List(9,15))
+        val player2 = new Player("Mozart", maxCard, popCard, List(10,2))
         val players = List(player1, player2)
         val prizeCard:Int = 33
         dealer.findRoundWinner(prizeCard, players)
@@ -64,8 +64,8 @@ class DealerSpec extends Specification {
     }
 
     "a dealer 1e" can {
-        val player1 = new Player("Brahms", maxCard, popStrategy, List(9,15))
-        val player2 = new Player("Mozart", maxCard, popStrategy, List(10,2))
+        val player1 = new Player("Brahms", maxCard, popCard, List(9,15))
+        val player2 = new Player("Mozart", maxCard, popCard, List(10,2))
         val players = List(player1, player2)
         val prizeCard:Int = 33
         val winner = dealer.playRound(prizeCard, players)

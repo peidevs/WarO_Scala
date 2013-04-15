@@ -1,7 +1,7 @@
 
 package org.peidevs.waro.strategy
 
-class PopStrategy extends Strategy {
+class PopCard extends Strategy {
     def selectCard(prizeCard:Int, hand:List[Int], maxCard:Int): Int = {
         hand(0)
     }
