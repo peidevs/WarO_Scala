@@ -23,9 +23,7 @@ class Dealer {
             players(index - 1).hand = hands(index)
         }
         
-        val table = new Table(players, kitty)
-        
-        return table        
+        new Table(players, kitty)
     }
     
     def play(table:Table) = {
@@ -50,7 +48,7 @@ class Dealer {
 
         winner.winsRound(prizeCard)
         
-        return winner        
+        winner        
     }
     
     def findRoundWinner(prizeCard:Int, players:List[Player]):Bid = {
@@ -104,11 +102,11 @@ class Dealer {
             deck ::= i
         }
 
-        return Random.shuffle(deck)
+        Random.shuffle(deck)
     }
     
     def getNumCardsInHand(numCards:Int, numPlayers:Int):Int = {
-        return (numCards / (numPlayers + 1))
+        (numCards / (numPlayers + 1))
     }    
     
 }

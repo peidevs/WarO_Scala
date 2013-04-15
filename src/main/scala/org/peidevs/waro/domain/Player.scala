@@ -17,10 +17,8 @@ class Player(val name:String, val maxCard:Int, val strategy:Strategy,
     def getBid(prizeCard:Int):Bid = {
 
         val offer = strategy.selectCard(prizeCard, hand, maxCard)
-        val bid = new Bid(offer, this)
         hand = hand diff List(offer)        
-        
-        return bid
+        new Bid(offer, this)
     }
     
     def clear() = {

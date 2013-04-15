@@ -10,8 +10,7 @@ class Game {
         val dealer = new Dealer()
         val table = dealer.deal(numCards, players)
         dealer.play(table)
-        val winner = determineWinner(table)
-        return winner
+        determineWinner(table)
     }
     
     // -- internal
