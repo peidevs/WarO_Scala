@@ -7,7 +7,8 @@ import org.peidevs.waro.strategy._
 import org.specs2.mutable._
 
 class GameSpec extends Specification {
-    val game = new Game()
+    val deckFactory = new DeckFactory()
+    val game = new Game(deckFactory)
     val popCard = new PopCard()
     val maxCard = 60
     

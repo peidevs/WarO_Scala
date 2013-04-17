@@ -3,15 +3,7 @@ package org.peidevs.waro.casino
 
 import org.peidevs.waro.domain._
 
-import scala.util.Random
-
-import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
-import scala.collection.JavaConverters._
-
-import com.google.common.collect.Lists
-
-class Dealer {
+class Dealer(val deckFactory:DeckFactory) {
     def deal(numCards:Int, players:List[Player]):Table = {
         val numPlayers = players.size
 
@@ -72,39 +64,25 @@ class Dealer {
         
         return winningBid
     }
+
+    def partition(list:List[Int], size:Int):List[List[Int]] = {
+        if (list.size > 0) {
+            val sliceList:List[Int] = list.slice(0,size)
+            val rest = list diff sliceList
+            List(sliceList) ++ partition(rest, size)
+        } else {
+            Nil
+        }
+    }
     
     def dealHands(numCards:Int, numPlayers:Int):List[List[Int]] = {
         var hands:List[List[Int]] = List()
 
-        val deck:List[Int] = newDeck(numCards)        
+        val deck:List[Int] = deckFactory.newDeck(numCards)        
         val numCardsInHand:Int = getNumCardsInHand(numCards, numPlayers)
-
-        val deckJavaList:java.util.List[Int] = ListBuffer(deck: _*)
-
-        val javaHands:java.util.List[java.util.List[Int]] = 
-                Lists.partition(deckJavaList, numCardsInHand)
-        
-        val iter = javaHands.iterator
-        
-        while (iter.hasNext()) {
-            val javaHand:java.util.List[Int] = iter.next()
-            val hand = javaHand.asScala.toList
-            hands ::= hand
-        }
-        
-        return hands
+        partition(deck, numCardsInHand)
     }
-    
-    def newDeck(numCards:Int):List[Int] = {
-        var deck:List[Int] = List()
         
-        for (i <- 1 to numCards) {
-            deck ::= i
-        }
-
-        Random.shuffle(deck)
-    }
-    
     def getNumCardsInHand(numCards:Int, numPlayers:Int):Int = {
         (numCards / (numPlayers + 1))
     }    

@@ -3,11 +3,11 @@ package org.peidevs.waro.casino
 
 import org.peidevs.waro.domain._
 
-class Game {
+class Game(val deckFactory:DeckFactory) {
     val verbose = true
     
     def playGame(numCards:Int, players:List[Player]):Player = {
-        val dealer = new Dealer()
+        val dealer = new Dealer(deckFactory)
         val table = dealer.deal(numCards, players)
         dealer.play(table)
         determineWinner(table)
