@@ -12,6 +12,31 @@ class DealerSpec extends Specification {
     val popCard = new PopCard()
     val maxCard = 60
     
+    class MockDeckFactory(val mockList:List[Int]) extends DeckFactory {
+        override def newDeck(numCards:Int):List[Int] = {
+            mockList
+        }
+    }
+        
+    "using mock deckfactory" can {
+        val mockList = (1 to maxCard).toList
+        val dealer = new Dealer(new MockDeckFactory(mockList))
+        val player1 = new Player("Brahms", maxCard, popCard)
+        val player2 = new Player("Mozart", maxCard, popCard)
+        val players = List(player1, player2)
+        var table = dealer.deal(maxCard, players)
+        
+        "deal in predictable way" in {
+            2 mustEqual table.players.size
+            20 mustEqual table.kitty.size            
+            (1 to 20).toList mustEqual table.kitty
+            20 mustEqual table.players(0).hand.size
+            (21 to 40).toList mustEqual table.players(0).hand
+            20 mustEqual table.players(1).hand.size
+            (41 to 60).toList mustEqual table.players(1).hand
+        }
+    }
+    
     "a dealer 1" can {
         val player1 = new Player("Brahms", maxCard, popCard)
         val player2 = new Player("Mozart", maxCard, popCard)
