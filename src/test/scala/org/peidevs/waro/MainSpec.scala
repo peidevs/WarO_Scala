@@ -19,6 +19,8 @@ class MainSpec extends Specification {
 
     val popCardStrategy = new PopCard()
     val maxCardStrategy = new MaxCard()
+    val minCardStrategy = new MinCard() 
+    val nearestCardStrategy = new NearestCard() 
     
     "integration test" can {
         val mockList = (1 to maxCard).toList
@@ -89,6 +91,57 @@ class MainSpec extends Specification {
             0 mustEqual player2.playerStats.numGamesWon
             1 mustEqual player2.playerStats.numRoundsWon
             8 mustEqual player2.playerStats.total
+        }
+    }    
+    
+    "integration test for a game with MinCard strategies" can {
+        val mockList = List(7,8,9,6,3,2,5,4,1)
+        val mockDeckFactory = new MockDeckFactory(mockList)
+        val dealer = new Dealer(mockDeckFactory)
+
+        val player1 = new Player("Brahms", maxCard, minCardStrategy)
+        val player2 = new Player("Mozart", maxCard, minCardStrategy)
+        val players = List(player1, player2)
+        config.players = players
+        config.numCards = maxCard
+        config.numGames = 1
+        config.deckFactory = mockDeckFactory
+        var tourney = new Tourney(config)
+        tourney.playGames()
+        
+        "test the results" in {
+            1 mustEqual player1.playerStats.numGamesWon
+            2 mustEqual player1.playerStats.numRoundsWon
+            16 mustEqual player1.playerStats.total
+            0 mustEqual player2.playerStats.numGamesWon
+            1 mustEqual player2.playerStats.numRoundsWon
+            8 mustEqual player2.playerStats.total
+        }
+    }    
+    
+    "integration test for a game with NearestCard strategies" can {
+        val mockList = List(2,6,8,1,3,7,4,5,9)
+        val mockDeckFactory = new MockDeckFactory(mockList)
+        val dealer = new Dealer(mockDeckFactory)
+
+        val player1 = new Player("Brahms", maxCard, nearestCardStrategy)
+        val player2 = new Player("Mozart", maxCard, nearestCardStrategy)
+        val players = List(player1, player2)
+        config.players = players
+        config.numCards = maxCard
+        config.numGames = 1
+        config.deckFactory = mockDeckFactory
+        var tourney = new Tourney(config)
+        tourney.playGames()
+        
+        "test the results" in {
+            // 2 to Mozart, 6 to Brahms, 8 to Mozart
+            0 mustEqual player1.playerStats.numGamesWon
+            1 mustEqual player1.playerStats.numRoundsWon
+            6 mustEqual player1.playerStats.total
+            1 mustEqual player2.playerStats.numGamesWon
+            2 mustEqual player2.playerStats.numRoundsWon
+            10 mustEqual player2.playerStats.total
         }
     }    
 }
