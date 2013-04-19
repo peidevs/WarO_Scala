@@ -11,7 +11,7 @@ class Tourney(val config:Config) {
 
     def playGames() = {
         for (i <- 1 to numGames) {
-            players.foreach { p => p.clear() }
+            players.foreach { _.clear() }
             def game = new Game(config.deckFactory)
             game.playGame(numCards, players)
         }
