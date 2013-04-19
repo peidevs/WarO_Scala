@@ -76,8 +76,6 @@ class Dealer(val deckFactory:DeckFactory) {
     }
     
     def dealHands(numCards:Int, numPlayers:Int):List[List[Int]] = {
-        var hands:List[List[Int]] = List()
-
         val deck:List[Int] = deckFactory.newDeck(numCards)        
         val numCardsInHand:Int = getNumCardsInHand(numCards, numPlayers)
         partition(deck, numCardsInHand)
