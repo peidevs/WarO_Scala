@@ -35,9 +35,7 @@ class Player(val name:String, val maxCard:Int, val strategy:Strategy,
     }
     
     def emitLog():String = {
-        val log:String = playerStats.emitLog
-        val result:String = name + " " + log
-        return result
+        name + " " + playerStats.emitLog
     }
     
 }

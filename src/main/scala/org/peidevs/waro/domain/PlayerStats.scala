@@ -17,7 +17,6 @@ class PlayerStats(var total: Int, var numRoundsWon:Int, var numGamesWon:Int) {
     }
     
     def emitLog:String = {
-        val result = "(" + total + " , " + numRoundsWon + " , " + numGamesWon + " )"
-        return result
+        "(" + total + " , " + numRoundsWon + " , " + numGamesWon + " )"
     }
 }
