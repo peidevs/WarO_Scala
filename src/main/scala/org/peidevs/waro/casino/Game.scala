@@ -19,7 +19,7 @@ class Game(val deckFactory:DeckFactory) {
         val kitty = table.kitty
         val players = table.players
 
-        val winner = players.maxBy { p => p.playerStats.total }
+        val winner = players.maxBy { _.playerStats.total }
         val max = winner.playerStats.total
 
         if (verbose) {
