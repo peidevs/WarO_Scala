@@ -41,6 +41,7 @@ class GameSpec extends Specification {
         
         "play a game" in {
             println("winner is " + winner.name)
+            2 mustEqual (1+1)
         }
     }
     
