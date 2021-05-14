@@ -1,4 +1,37 @@
+plugins {
+    id 'scala' 
 
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.13.3'
+
+    // implementation 'com.google.guava:guava:30.0-jre'
+
+    testImplementation 'junit:junit:4.13.1' 
+    testImplementation 'org.scalatest:scalatest_2.13:3.2.3'
+    testImplementation 'org.scalatestplus:junit-4-13_2.13:3.2.2.0'
+    testImplementation "org.specs2:specs2-core_2.11:3.7.2"
+    testImplementation "org.specs2:specs2-junit_2.11:3.7.2"
+
+    testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.13:1.2.0'
+}
+
+application {
+    mainClass = 'org.peidevs.waro.Main'
+}
+
+test {
+    systemProperty "specs2.commandline" , "html"
+    systemProperty "specs2.outDir"  ,   "$buildDir/reports/specs2" 
+}
+
+/*
 apply plugin: 'scala'
 
 configurations {
@@ -35,22 +68,26 @@ jar.manifest {
     attributes 'Class-Path' : 'jars/scala-library-2.10.1.jar'
 }
 
-task myBuild(dependsOn: ['test', 'copyReleaseJars', 'jar']) << {
-    def zipFile = "${buildDir}/${project.deliverableName}.zip"
-    ant.zip(destfile: "${zipFile}") {
-        zipfileset(dir: "${buildDir}/jars", prefix: "jars")
-        zipfileset(file: "${buildDir}/libs/${project.deliverableName}.jar")
-    }
+task myBuild(dependsOn: ['test', 'copyReleaseJars', 'jar']) {
+    doLast {
+        def zipFile = "${buildDir}/${project.deliverableName}.zip"
+        ant.zip(destfile: "${zipFile}") {
+            zipfileset(dir: "${buildDir}/jars", prefix: "jars")
+            zipfileset(file: "${buildDir}/libs/${project.deliverableName}.jar")
+        }
 
-    ant.unzip(src: "${zipFile}", dest: project.stagingDir)
+        ant.unzip(src: "${zipFile}", dest: project.stagingDir)
+    }
 }
 
-task myTest(dependsOn: 'myBuild') << {
-    new File("src/test/scala").eachFileRecurse { file ->
-        def matcher = (file.path =~ /.*(org.*Spec).scala/)
-        if (matcher.matches()) {                
-            def testSpec = matcher[0][1].replace('/' as char, '.' as char)
-            executeOnShell("./test.sh " + testSpec)
+task myTest(dependsOn: 'myBuild') {
+    doLast {
+        new File("src/test/scala").eachFileRecurse { file ->
+            def matcher = (file.path =~ /.*(org.*Spec).scala/)
+            if (matcher.matches()) {                
+                def testSpec = matcher[0][1].replace('/' as char, '.' as char)
+                executeOnShell("./test.sh " + testSpec)
+            }
         }
     }
 }
@@ -81,3 +118,4 @@ def addShellPrefix(String command) {
   commandArray[2] = command
   return commandArray
 }
+*/

@@ -10,6 +10,15 @@ A work in progress: this is incomplete and possibly not very idiomatic to Scala.
 Rules:
 ---------
 
+* update MAY 2021
+* to run: `./run.sh`
+    - verified with Gradle 7.0.2, Scala 2.13.5, JDK 16.0.2
+* unit-tests do not run
+    - Specs2 was always tricky to run via Gradle and even the hack/script no longer works
+
+Rules:
+---------
+
 Use a deck of N cards with no suits, just natural numbers from 1 to N.
 (as in Rack-O http://en.wikipedia.org/wiki/Rack-O)
 
