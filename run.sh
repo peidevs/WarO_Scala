@@ -2,6 +2,6 @@
 
 set -e
 
-gradle clean run
+./gradlew clean run
 
 echo "Ready."
