@@ -12,7 +12,7 @@ Details:
 * update MAY 2021
 * to run: `./run.sh`
 * to test: `./test.sh` 
-* uses JDK 11, Gradle 6.5, Scala 2.10.x
+* uses JDK 11, Gradle 6.5, Scala 2.13.x
 
 Rules:
 ---------
