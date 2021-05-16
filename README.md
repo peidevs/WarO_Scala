@@ -6,14 +6,13 @@ The War-O [code kata](https://en.wikipedia.org/wiki/Kata_(programming)) in Scala
 
 A work in progress: this is incomplete and possibly not very idiomatic to Scala.
 
-Rules:
+Details:
 ---------
 
 * update MAY 2021
 * to run: `./run.sh`
-    - verified with Gradle 7.0.2, Scala 2.13.5, JDK 16.0.2
-* unit-tests do not run
-    - Specs2 was always tricky to run via Gradle and even the hack/script no longer works
+* to test: `./test.sh` 
+* uses JDK 11, Gradle 6.5, Scala 2.10.x
 
 Rules:
 ---------

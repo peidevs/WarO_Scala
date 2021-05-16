@@ -1,13 +1,15 @@
-
 package org.peidevs.waro
 
 import org.peidevs.waro.casino._
 import org.peidevs.waro.domain._
 import org.peidevs.waro.strategy._
 
-import org.specs2.mutable._
+import org.scalatest.funsuite.AnyFunSuite
+import org.junit.runner.RunWith
+import org.scalatestplus.junit.JUnitRunner
 
-class MainSpec extends Specification {    
+@RunWith(classOf[JUnitRunner])
+class MainSuite extends AnyFunSuite {
     class MockDeckFactory(val mockList:List[Int]) extends DeckFactory {
         override def newDeck(numCards:Int):List[Int] = {
             mockList
@@ -21,8 +23,12 @@ class MainSpec extends Specification {
     val maxCardStrategy = new MaxCard()
     val minCardStrategy = new MinCard() 
     val nearestCardStrategy = new NearestCard() 
-    
-    "integration test" can {
+
+    test("canary test for Main") {
+        val x = 2 + 2
+        assert(x == 4)
+    }
+    test("integration test") {
         val mockList = (1 to maxCard).toList
         val mockDeckFactory = new MockDeckFactory(mockList)
         val dealer = new Dealer(mockDeckFactory)
@@ -30,21 +36,20 @@ class MainSpec extends Specification {
         val player1 = new Player("Brahms", maxCard, popCardStrategy)
         val player2 = new Player("Mozart", maxCard, popCardStrategy)
         val players = List(player1, player2)
+
+        // test
         var table = dealer.deal(maxCard, players)
         
-        "test simple deal" in {
-            2 mustEqual table.players.size
-            3 mustEqual table.kitty.size            
-            3 mustEqual table.players(0).hand.size
-            3 mustEqual table.players(1).hand.size
+        assert(2 == table.players.size)
+        assert(3 == table.kitty.size)
+        assert(3 == table.players(0).hand.size)
+        assert(3 == table.players(1).hand.size)
             
-            (1 to 3).toList mustEqual table.kitty
-            (4 to 6).toList mustEqual table.players(0).hand
-            (7 to 9).toList mustEqual table.players(1).hand
-        }
+        assert((1 to 3).toList == table.kitty)
+        assert((4 to 6).toList == table.players(0).hand)
+        assert((7 to 9).toList == table.players(1).hand)
     }
-        
-    "integration test for a game with PopCard strategies" can {
+    test("integration test for a game with PopCard strategies") {
         val mockList = (1 to maxCard).toList
         val mockDeckFactory = new MockDeckFactory(mockList)
         val dealer = new Dealer(mockDeckFactory)
@@ -57,19 +62,18 @@ class MainSpec extends Specification {
         config.numGames = 1
         config.deckFactory = mockDeckFactory
         var tourney = new Tourney(config)
+    
+        // test
         tourney.playGames()
         
-        "test the results" in {
-            0 mustEqual player1.playerStats.numGamesWon
-            0 mustEqual player1.playerStats.numRoundsWon
-            0 mustEqual player1.playerStats.total
-            1 mustEqual player2.playerStats.numGamesWon
-            3 mustEqual player2.playerStats.numRoundsWon
-            6 mustEqual player2.playerStats.total
-        }
+        assert(0 == player1.playerStats.numGamesWon)
+        assert(0 == player1.playerStats.numRoundsWon)
+        assert(0 == player1.playerStats.total)
+        assert(1 == player2.playerStats.numGamesWon)
+        assert(3 == player2.playerStats.numRoundsWon)
+        assert(6 == player2.playerStats.total)
     }
-    
-    "integration test for a game with MaxCard strategies" can {
+    test("integration test for a game with MaxCard strategies") {
         val mockList = List(7,8,9,6,3,2,5,4,1)
         val mockDeckFactory = new MockDeckFactory(mockList)
         val dealer = new Dealer(mockDeckFactory)
@@ -82,19 +86,18 @@ class MainSpec extends Specification {
         config.numGames = 1
         config.deckFactory = mockDeckFactory
         var tourney = new Tourney(config)
+
+        // test
         tourney.playGames()
-        
-        "test the results" in {
-            1 mustEqual player1.playerStats.numGamesWon
-            2 mustEqual player1.playerStats.numRoundsWon
-            16 mustEqual player1.playerStats.total
-            0 mustEqual player2.playerStats.numGamesWon
-            1 mustEqual player2.playerStats.numRoundsWon
-            8 mustEqual player2.playerStats.total
-        }
-    }    
-    
-    "integration test for a game with MinCard strategies" can {
+
+        assert(1 == player1.playerStats.numGamesWon)
+        assert(2 == player1.playerStats.numRoundsWon)
+        assert(16 == player1.playerStats.total)
+        assert(0 == player2.playerStats.numGamesWon)
+        assert(1 == player2.playerStats.numRoundsWon)
+        assert(8 == player2.playerStats.total)
+    }
+    test("integration test for a game with MinCard strategies") {
         val mockList = List(7,8,9,6,3,2,5,4,1)
         val mockDeckFactory = new MockDeckFactory(mockList)
         val dealer = new Dealer(mockDeckFactory)
@@ -107,19 +110,18 @@ class MainSpec extends Specification {
         config.numGames = 1
         config.deckFactory = mockDeckFactory
         var tourney = new Tourney(config)
+
+        // test
         tourney.playGames()
-        
-        "test the results" in {
-            1 mustEqual player1.playerStats.numGamesWon
-            2 mustEqual player1.playerStats.numRoundsWon
-            16 mustEqual player1.playerStats.total
-            0 mustEqual player2.playerStats.numGamesWon
-            1 mustEqual player2.playerStats.numRoundsWon
-            8 mustEqual player2.playerStats.total
-        }
-    }    
-    
-    "integration test for a game with NearestCard strategies" can {
+
+        assert(1 == player1.playerStats.numGamesWon)
+        assert(2 == player1.playerStats.numRoundsWon)
+        assert(16 == player1.playerStats.total)
+        assert(0 == player2.playerStats.numGamesWon)
+        assert(1 == player2.playerStats.numRoundsWon)
+        assert(8 == player2.playerStats.total)
+    }
+    test("integration test for a game with NearestCard strategies") {
         val mockList = List(2,6,8,1,3,7,4,5,9)
         val mockDeckFactory = new MockDeckFactory(mockList)
         val dealer = new Dealer(mockDeckFactory)
@@ -132,16 +134,15 @@ class MainSpec extends Specification {
         config.numGames = 1
         config.deckFactory = mockDeckFactory
         var tourney = new Tourney(config)
+
+        // test
         tourney.playGames()
-        
-        "test the results" in {
-            // 2 to Mozart, 6 to Brahms, 8 to Mozart
-            0 mustEqual player1.playerStats.numGamesWon
-            1 mustEqual player1.playerStats.numRoundsWon
-            6 mustEqual player1.playerStats.total
-            1 mustEqual player2.playerStats.numGamesWon
-            2 mustEqual player2.playerStats.numRoundsWon
-            10 mustEqual player2.playerStats.total
-        }
-    }    
+
+        assert(0 == player1.playerStats.numGamesWon)
+        assert(1 == player1.playerStats.numRoundsWon)
+        assert(6 == player1.playerStats.total)
+        assert(1 == player2.playerStats.numGamesWon)
+        assert(2 == player2.playerStats.numRoundsWon)
+        assert(10 == player2.playerStats.total)
+    }
 }
