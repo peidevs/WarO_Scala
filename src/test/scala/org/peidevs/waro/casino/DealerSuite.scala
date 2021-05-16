@@ -1,122 +1,107 @@
-
 package org.peidevs.waro.casino
 
 import org.peidevs.waro.domain._
 import org.peidevs.waro.strategy._
 
-import org.specs2.mutable._
+import org.scalatest.funsuite.AnyFunSuite
+import org.junit.runner.RunWith
+import org.scalatestplus.junit.JUnitRunner
 
-class DealerSpec extends Specification {
+@RunWith(classOf[JUnitRunner])
+class DealerSuite extends AnyFunSuite {
     val deckFactory = new DeckFactory()
     var dealer = new Dealer(deckFactory)
     val popCard = new PopCard()
     val maxCard = 60
-    
+
     class MockDeckFactory(val mockList:List[Int]) extends DeckFactory {
         override def newDeck(numCards:Int):List[Int] = {
             mockList
         }
     }
-        
-    "using mock deckfactory" can {
+
+    test("canary test for Dealer") {
+        val x = 2 + 2
+        assert(x == 4)
+    }
+    test("deal cards") {
         val mockList = (1 to maxCard).toList
         val dealer = new Dealer(new MockDeckFactory(mockList))
         val player1 = new Player("Brahms", maxCard, popCard)
         val player2 = new Player("Mozart", maxCard, popCard)
         val players = List(player1, player2)
+
+        // test
         var table = dealer.deal(maxCard, players)
-        
-        "deal in predictable way" in {
-            2 mustEqual table.players.size
-            20 mustEqual table.kitty.size            
-            (1 to 20).toList mustEqual table.kitty
-            20 mustEqual table.players(0).hand.size
-            (21 to 40).toList mustEqual table.players(0).hand
-            20 mustEqual table.players(1).hand.size
-            (41 to 60).toList mustEqual table.players(1).hand
-        }
+
+        assert(2 == table.players.size)
+        assert(20 == table.kitty.size)            
+        assert((1 to 20).toList == table.kitty)
+        assert(20 == table.players(0).hand.size)
+        assert((21 to 40).toList == table.players(0).hand)
+        assert(20 == table.players(1).hand.size)
+        assert((41 to 60).toList == table.players(1).hand)
     }
-    
-    "a dealer 1" can {
+    test("deal cards case 1") {
         val player1 = new Player("Brahms", maxCard, popCard)
         val player2 = new Player("Mozart", maxCard, popCard)
         val players = List(player1, player2)
+
+        // test
         var table = dealer.deal(33, players)
         
-        "deal cards" in {
-            2 mustEqual table.players.size
-            11 mustEqual table.players(0).hand.size
-            11 mustEqual table.players(1).hand.size
-            11 mustEqual table.kitty.size
-        }
+        assert(2 == table.players.size)
+        assert(11 == table.players(0).hand.size)
+        assert(11 == table.players(1).hand.size)
+        assert(11 == table.kitty.size)
     }
-    
-    "a dealer 1b" can {
+    test("deal cards case 1b") {
+        // test
         val hands = dealer.dealHands(21,2)
         
-        "deal hands" in {
-            3 mustEqual hands.size
-            7 mustEqual hands(0).size
-            7 mustEqual hands(1).size
-            7 mustEqual hands(2).size
-        }
+        assert(3 == hands.size)
+        assert(7 == hands(0).size)
+        assert(7 == hands(1).size)
+        assert(7 == hands(2).size)
     }
-    
-    "a dealer 1c" can {
+    test("deal cards case 1c") {
         val player1 = new Player("Brahms", maxCard, popCard, List(9))
         val player2 = new Player("Mozart", maxCard, popCard, List(10))
         val players = List(player1, player2)
         val prizeCard:Int = 33
+
+        // test
         val bid:Bid = dealer.findRoundWinner(prizeCard, players)
         
-        "find round winner for 1 round" in {
-            10 mustEqual bid.offer
-            "Mozart" mustEqual bid.player.name
-        }
+        assert(10 == bid.offer)
+        assert("Mozart" == bid.player.name)
     }
-
-    "a dealer 1d" can {
+    test("deal cards case 1d") {
         val player1 = new Player("Brahms", maxCard, popCard, List(9,15))
         val player2 = new Player("Mozart", maxCard, popCard, List(10,2))
         val players = List(player1, player2)
         val prizeCard:Int = 33
         dealer.findRoundWinner(prizeCard, players)
+
+        // test
         val bid:Bid = dealer.findRoundWinner(prizeCard, players)
         
-        "find round winner for 2 rounds" in {
-            15 mustEqual bid.offer
-            "Brahms" mustEqual bid.player.name
-        }
+        assert(15 == bid.offer)
+        assert("Brahms" == bid.player.name)
     }
-
-    "a dealer 1e" can {
+    test("deal cards case 1e") {
         val player1 = new Player("Brahms", maxCard, popCard, List(9,15))
         val player2 = new Player("Mozart", maxCard, popCard, List(10,2))
         val players = List(player1, player2)
         val prizeCard:Int = 33
+
+        // test
         val winner = dealer.playRound(prizeCard, players)
         
-        "play one round" in {
-            "Mozart" mustEqual winner.name
-        }
+        assert("Mozart" == winner.name)
     }
-    
-    "a dealer 2" can {        
-        "calc # hands" in {
-            12 mustEqual dealer.getNumCardsInHand(60, 4)
-        }
-        "calc # hands v2" in {
-            10 mustEqual dealer.getNumCardsInHand(32, 2)
-        }
+    test("deal cards case 2") {
+        assert(12 == dealer.getNumCardsInHand(60, 4))
+        assert(10 == dealer.getNumCardsInHand(32, 2))
     }
-    
-    /*
-    "a dealer 3" can {
-        var deck = dealer.newDeck(20)
-        println("deck is : " + deck)
-        "make a deck" in {
-            20 mustEqual deck.size
-        }
-    }
-    */
 }

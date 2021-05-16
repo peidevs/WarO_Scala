@@ -1,18 +1,24 @@
-
 package org.peidevs.waro.casino
 
 import org.peidevs.waro.domain._
 import org.peidevs.waro.strategy._
 
-import org.specs2.mutable._
+import org.scalatest.funsuite.AnyFunSuite
+import org.junit.runner.RunWith
+import org.scalatestplus.junit.JUnitRunner
 
-class GameSpec extends Specification {
+@RunWith(classOf[JUnitRunner])
+class GameSuite extends AnyFunSuite {
     val deckFactory = new DeckFactory()
     val game = new Game(deckFactory)
     val popCard = new PopCard()
     val maxCard = 60
-    
-    "a game" can {
+
+    test("canary test for Game") {
+        val x = 2 + 2
+        assert(x == 4)
+    }
+    test("determine winner") {
         val playerStats1 = new PlayerStats(9,0,0)
         val player1 = new Player("Brahms", maxCard, popCard, List(), playerStats1)
 
@@ -23,26 +29,24 @@ class GameSpec extends Specification {
         val kitty = List(3,4,5)
         
         val table = new Table(players, kitty)
+
+        // test
         val winner = game.determineWinner(table)
         
-        "determine a winner" in {
-            9 mustEqual winner.playerStats.total
-            1 mustEqual winner.playerStats.numGamesWon
-            "Brahms" mustEqual winner.name
-        }
+        assert(9 == winner.playerStats.total)
+        assert(1 == winner.playerStats.numGamesWon)
+        assert("Brahms" == winner.name)
     }
-    
-    "a game" can {
+    test("play a game") {
         val player1 = new Player("Brahms", maxCard, popCard)
         val player2 = new Player("Mozart", maxCard, popCard)
 
         val players = List(player1, player2)        
+        
+        // test
         val winner = game.playGame(6, players)
         
-        "play a game" in {
-            println("winner is " + winner.name)
-            2 mustEqual (1+1)
-        }
+        assert(winner != null)
+        assert(2 == (1+1))
     }
-    
 }
