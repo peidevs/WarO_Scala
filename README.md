@@ -10,6 +10,9 @@ Details:
 ---------
 
 * update MAY 2021
+    - replaced ancient Gradle gnarly-ness with `application` plugin
+    - migrated Specs2 unit-tests to JUnit style
+    - this is in preparation for a new project using Scala 3
 * to run: `./run.sh`
 * to test: `./test.sh` 
 * uses JDK 11, Gradle 6.5, Scala 2.13.x
